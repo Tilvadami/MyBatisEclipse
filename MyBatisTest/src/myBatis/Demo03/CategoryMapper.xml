@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE 
+mapper  
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myBatis.Demo03.ICategoryMapper">
+	<select id="queryCategory" parameterType="int" resultMap="book_LazyLoading_Map">
+		select * from category where cid = #{cid};
+	</select>
+	
+	<resultMap type="category" id="book_LazyLoading_Map">
+		<id property="cid" column="cid"/>
+		<result property="cname" column="cname"/>
+		
+		<collection property="books" column="cid" select="myBatis.Demo03.IBookMapper.queryBook">
+			
+		</collection>
+	</resultMap>
+	
+</mapper>
+
+

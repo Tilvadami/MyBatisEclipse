@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE 
+mapper  
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myBatis.Demo01.PersonDao">
+	<select id="selectpersonbyid" resultType="person" parameterType="INTEGER">
+		select * from Person where id = #{id}
+	</select>
+	
+	<insert id="addperson" parameterType="person">
+		insert into Person(id,name,age) values(#{id},#{name},#{age})
+	</insert>
+	
+	<delete id="deleteperson" parameterType="Integer">
+		delete from person where id = #{id}
+	</delete>
+	
+	<update id="updateperson" parameterType="person">
+		update person set name = #{name} , age = #{age} where id = #{id}
+	</update>
+</mapper>

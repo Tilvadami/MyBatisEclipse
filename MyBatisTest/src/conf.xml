@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE 
+configuration  
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 引入配置文件 -->
+	<properties resource="db.properties"/>
+	
+	
+	<!-- 设置全局参数，不到万不得已不要使用 -->
+	<settings>
+		<!-- 开启日志 -->
+		<setting name="logImpl" value="LOG4J"/>
+		
+		<!-- 开启延迟加载 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 关闭立即加载 -->
+		<setting name="aggressiveLazyLoading" value="false"/>
+		<!-- 开启二级缓存 -->
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+	
+	<!-- 定义别名 -->
+	<typeAliases>
+		<!-- <typeAlias type="myBatis.Demo01.Person" alias="Person" /> -->
+		<!-- 为整个包定义别名，别名即类名，且忽略大小写 -->
+		<package name="myBatis.Demo01"/>
+		<package name="myBatis.Demo02"/>
+		<package name="myBatis.Demo03"/>
+	</typeAliases>
+	<!-- 类型转换器 -->
+	<!-- handler:转换器全类名 -->
+	<typeHandlers>
+		<typeHandler handler="myBatis.Demo02.BooleanAndCharConverter" jdbcType="CHAR" javaType="Boolean"/>
+	</typeHandlers>
+	
+	<!-- 配置数据库支持类 -->
+	
+<!-- 默认环境为development -->
+	<environments default="development">
+		<environment id="development">
+		<!-- 事务提交方式为JDBC方式（手动提交） -->
+			<transactionManager type="JDBC"/>
+			<!-- 数据源类型为：数据库连接池 -->
+			<dataSource type="POOLED">
+			<!-- 配置数据库信息 -->
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+		
+		<environment id="test">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+		
+		
+		<environment id="ORCLDB">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${oracle.driver}"/>
+				<property name="url" value="${oracle.url}"/>
+				<property name="username" value="${oracle.username}"/>
+				<property name="password" value="${oracle.password}"/>
+			</dataSource>
+			
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="myBatis/Demo01/PersonMapper.xml"/>
+		<mapper resource="myBatis/Demo02/CharacMapper.xml"/>
+		<mapper resource="myBatis/Demo03/BookMapper.xml"/>
+		<!-- <mapper class="myBatis.Demo03.IBookMapper"/> -->
+		<!--  <mapper resource="myBatis/Demo03/CategoryMapper.xml"/>-->
+		<!--  <package name="myBatis/Demo03"/>-->
+		
+	</mappers>
+	
+</configuration>

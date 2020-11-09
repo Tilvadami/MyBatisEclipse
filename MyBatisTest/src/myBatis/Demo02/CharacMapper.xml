@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE 
+mapper  
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myBatis.Demo02.CharacDao">
+
+	<insert id="addCharacter" parameterType="Charac">
+		insert into
+		characters(id,name,age,sex)
+		values(#{id},#{name},#{age},#{sex,javaType=Boolean,jdbcType=CHAR})
+	</insert>
+	<delete id="deleteCharacter" parameterType="int">
+		delete from
+		characters where id = #{id}
+	</delete>
+	<update id="updateCharacter" parameterType="Charac">
+		update characters set
+		name = #{name} , age = #{age} , sex =
+		#{sex,javaType=Boolean,jdbcType=CHAR} where id = #{id}
+	</update>
+	<select id="queryCharacter" parameterType="int"
+		resultMap="CharacMapper">
+		select * from characters where id = #{id}
+	</select>
+	<select id="queryAllCharacters" resultMap="CharacMapper">
+		select * from
+		characters
+	</select>
+	<select id="queryCharactersByHashMap" parameterType="HashMap"
+		resultType="Charac">
+		select * from characters where id = #{id} or name like
+		'%${name}%'
+	</select>
+	<select id="queryCountByProcedure" statementType="CALLABLE"
+		parameterType="HashMap">
+		{CALL
+		querycount(#{p_in,jdbcType=INTEGER,mode=IN},#{p_out,jdbcType=INTEGER,mode=OUT})}
+	</select>
+
+	<select id="queryCharactersByNotAll" resultType="HashMap">
+		select id
+		"cid",name "cname" from characters
+	</select>
+
+	<select id="queryCharac" parameterType="int" resultType="charac">
+		select
+		id "cid" , name from characters where id = #{id}
+	</select>
+
+	<select id="queryCharactersByDynamic" resultMap="CharacMapper"
+		parameterType="int">
+		select * from characters
+		<where>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+		</where>
+
+	</select>
+
+	<select id="queryWorkerAndCardById" parameterType="int"
+		resultMap="workerMap">
+		select w.*,c.* from workers w inner join workercard c
+		on w.cardid = c.cardid
+		where w.workerid = #{id}
+	</select>
+
+	<select id="queryDepartment" parameterType="int"
+		resultMap="departMap">
+		select d.*,w.*,c.* from depart d inner join workers w
+		on d.did = w.departid inner join workercard c
+		on w.cardid = c.cardid
+		where did = #{id}
+	</select>
+
+	<resultMap type="depart" id="departMap">
+		<id property="did" column="did" />
+		<result property="dname" column="dname" />
+		<collection property="workers" ofType="worker">
+			<id property="workerid" column="workerid" />
+			<result property="workername" column="workername" />
+			<result property="cardid" column="cardid" />
+			<association property="card" javaType="workcard">
+				<id property="cardid" column="cardid" />
+				<result property="cardinfo" column="cardinfo" />
+			</association>
+		</collection>
+	</resultMap>
+
+	<resultMap type="worker" id="workerMap">
+		<id property="workerid" column="workerid" />
+		<result property="workername" column="workername" />
+		<result property="cardid" column="cardid" />
+		<association property="card" javaType="workcard">
+			<id property="cardid" column="cardid" />
+			<result property="cardinfo" column="cardinfo" />
+		</association>
+	</resultMap>
+
+	<resultMap type="Charac" id="CharacMapper">
+		<!-- 主键 -->
+		<id property="id" column="id" />
+		<!-- 非主键 -->
+		<result property="name" column="name" />
+		<result property="age" column="age" />
+		<!-- 类型转换 -->
+		<result property="sex" column="sex" javaType="Boolean"
+			jdbcType="CHAR" />
+	</resultMap>
+
+</mapper>

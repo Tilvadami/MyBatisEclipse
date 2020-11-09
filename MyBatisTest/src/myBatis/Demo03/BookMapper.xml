@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE 
+mapper  
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myBatis.Demo03.IBookMapper">
+
+	<!-- 声明开启二级缓存(所有select 语句) -->
+	<cache/>
+	
+	<select id="queryBook" parameterType="INTEGER" resultMap="BookMap">
+		select * from books where bid = #{bid}
+	</select>
+	
+	<resultMap type="Book" id="BookMap">
+		<id column="bid" property="bid"/>
+		<result column="bname" property="bname"/>
+		<result column="categoryid" property="categoryid"/>
+		<!-- javaType是category的java类型,column是用来做判断的条件 -->
+		<discriminator javaType="INTEGER" column="categoryid">
+		<!-- value是条件 resultType是resultType一致的 -->
+			<case value="1" resultType="Book">
+			<!-- column是列名，property是属性名,意思是当categoryid的值为1时，将表中price的值赋给类中的price -->
+				<result column="price" property="price"/>
+			</case>
+			<case value="2" resultType="Book">
+				<result column="price2" property="price"/>
+			</case>
+		</discriminator>
+	</resultMap>
+	
+	<select id="queryBooks" resultType="book" useCache="false">
+		select * from books;
+	</select>
+	
+	<select id="queryBookByMap" parameterType="INTEGER" resultType="Map">
+		select bid "id", bname "bname", price "price", categoryid "cid"
+		from books where bid = #{bid};
+	</select>
+	
+	<select id="queryBooksByMap" resultType="Map">
+		select * from books;
+	</select>
+	
+	<!-- 
+	<insert id="addBook" parameterType="Book" useGeneratedKeys="true" keyProperty="bid" >
+		insert into books(bname, price, categoryid) values(#{bname}, #{price}, #{categoryid})
+	</insert>
+	 -->
+	 
+	<insert id="addBook">
+		insert into books(bid, bname, price, categoryid) 
+		values(#{bid}, #{bname}, #{price}, #{categoryid})
+	</insert>
+</mapper>
