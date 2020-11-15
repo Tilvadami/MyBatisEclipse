@@ -79,8 +79,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="myBatis/Demo01/PersonMapper.xml"/>
 		<mapper resource="myBatis/Demo02/CharacMapper.xml"/>
 		<mapper resource="myBatis/Demo03/BookMapper.xml"/>
+		<!-- 注解形式Sql -->
 		<!-- <mapper class="myBatis.Demo03.IBookMapper"/> -->
+		
 		<!--  <mapper resource="myBatis/Demo03/CategoryMapper.xml"/>-->
+		<!-- 引用整个包下的mapper配置文件 -->
 		<!--  <package name="myBatis/Demo03"/>-->
 		
 	</mappers>

@@ -241,11 +241,11 @@ public class Test02 {
 //		addBook(book);
 //		Integer bid = book.getBid();
 //		System.out.println(bid);
-//		queryBook(3);
+		queryBook(3);
 
 //		addBook(14, "DADWAD", 10, 2);
 
-		queryBookByMap(1);
+//		queryBookByMap(1);
 		
 //		queryBooksByMap();
 	}
